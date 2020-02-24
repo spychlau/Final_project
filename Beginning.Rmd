@@ -1,0 +1,69 @@
+---
+title: "Untitled"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(reshape2)
+library(tidyverse)
+library(ggplot2)
+library(ggcorrplot)
+library(Hmisc)
+
+data <- read_csv("Data Edited.csv")
+
+```
+
+Using geom_tile
+
+```{r}
+
+cormat <- round(cor(data), 2)
+
+melted_cormat <- melt(cormat)
+
+ggplot(data = melted_cormat, aes(Var2, Var1, fill = value))+
+  geom_tile(color = "white") +
+  scale_fill_gradient2(low = "#b35806", high = "#542788", mid = "#f7f7f7", 
+                      midpoint = 0, limit = c(-1, 1), space = "Lab", 
+                      name="Pearson\nCorrelation") +
+  theme_minimal()+ 
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, size = 12, hjust = 1)) + 
+  coord_fixed() +
+  labs(x = "",
+       y = "")
+
+```
+
+Using ggcorrplot package 
+
+```{r}
+
+ggcorrplot(cormat, method = "circle", type = "lower", lab = T) + 
+  scale_fill_gradient2(low = "#b35806", high = "#542788", mid = "#f7f7f7", 
+                      midpoint = 0, limit = c(-1, 1), space = "Lab", 
+                      name="Pearson\nCorrelation")
+
+```
+
+For the last plot with cricle sizes symbolizing correlation size, a smaller number of correlations would be better. However, since people are not good at estimating areas anyways, there is no real value in doing this. I might add the concrete values of the correlation though as an annotation (but only if there are fewer variables! add "lab = TRUE" as an argument to  ggcorrplot).
+
+Idea: give the columns in the dataframe a meaningful order: IVs, mediators, outcomes, moderators, but also valence
+
+with cor function and own data 
+
+```{r}
+
+#install.packages("qgraph")
+library(qgraph)
+Graph_pcor <- qgraph(cormat, graph = "pcor", layout = "spring", minimum = "sig", sampleSize = 99, posCol = c("#ef8a62", "darkolivegreen"), negCol = c("#67a9cf", "darkorange"), edge.labels = TRUE)
+
+Graph_pcor <- qgraph(cormat, graph = "pcor", layout = "circle", minimum = "sig", sampleSize = 99, posCol = c("#ef8a62", "darkolivegreen"), negCol = c("#67a9cf", "darkorange"), edge.labels = TRUE)
+
+```
+
+Awesome! palette = "colorblind" can be used when group = blabla argument is used. I can use that argument to highlight IV, DV, mediator, moderator
+
+Furthermore, using dashed lines for negative correlations would be more printer-friendly
