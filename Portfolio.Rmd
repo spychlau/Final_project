@@ -5,6 +5,9 @@ editor_options:
   chunk_output_type: console
 ---
 
+What this is about:
+I want to plot correlations between variables that were captured in a survey I did in December. I am interested in better ways to communicate correlations than the usual correlation tables I see in our journals.
+
 ```{r}
 
 library(reshape2)
@@ -18,12 +21,7 @@ library(synthpop)
 library(xlsx)
 here::here()
 
-data <- read_csv("Data Edited.csv")
-
-synthesize <- syn(data)
-syn_data <- synthesize$syn
-
-write.csv(syn_data, "syn_data.csv")
+data <- read_csv("data_syn.csv")
 
 ```
 
@@ -31,7 +29,7 @@ Using geom_tile
 
 ```{r}
 
-cormat <- round(cor(syn_data), 2)
+cormat <- round(cor(data), 2)
 
 melted_cormat <- melt(cormat)
 
@@ -56,7 +54,7 @@ Using ggcorrplot package
 ```{r}
 
 
-cormat_pearson <- rcorr(as.matrix(syn_data), type = "pearson")
+cormat_pearson <- rcorr(as.matrix(data), type = "pearson")
 p.mat <- cormat_pearson$P
 
 ggcorrplot(cormat, method = "square", 
