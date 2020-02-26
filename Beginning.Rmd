@@ -6,13 +6,24 @@ editor_options:
 ---
 
 ```{r}
+
 library(reshape2)
 library(tidyverse)
 library(ggplot2)
 library(ggcorrplot)
 library(Hmisc)
+library(ggsn)
+library(qgraph)
+library(synthpop)
+library(xlsx)
+here::here()
 
 data <- read_csv("Data Edited.csv")
+
+synthesize <- syn(data)
+syn_data <- synthesize$syn
+
+write.csv(syn_data, "syn_data.csv")
 
 ```
 
@@ -20,7 +31,7 @@ Using geom_tile
 
 ```{r}
 
-cormat <- round(cor(data), 2)
+cormat <- round(cor(syn_data), 2)
 
 melted_cormat <- melt(cormat)
 
@@ -28,42 +39,68 @@ ggplot(data = melted_cormat, aes(Var2, Var1, fill = value))+
   geom_tile(color = "white") +
   scale_fill_gradient2(low = "#b35806", high = "#542788", mid = "#f7f7f7", 
                       midpoint = 0, limit = c(-1, 1), space = "Lab", 
-                      name="Pearson\nCorrelation") +
+                      name="Correlation\nstrength") +
   theme_minimal()+ 
-  theme(axis.text.x = element_text(angle = 90, vjust = 1, size = 12, hjust = 1)) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, size = 11, hjust = 1)) + 
   coord_fixed() +
   labs(x = "",
-       y = "")
+       y = "",
+       title = "Pearson correlations")
 
 ```
+
+This is OK, I don't like that it displays irrelevant and redundant information. It shows all correlations, including those that are insignificant, and the full table, i.e. upper and lower triangle. 
 
 Using ggcorrplot package 
 
 ```{r}
 
-ggcorrplot(cormat, method = "circle", type = "lower", lab = T) + 
-  scale_fill_gradient2(low = "#b35806", high = "#542788", mid = "#f7f7f7", 
+
+cormat_pearson <- rcorr(as.matrix(syn_data), type = "pearson")
+p.mat <- cormat_pearson$P
+
+ggcorrplot(cormat, method = "square", 
+           type = "lower", 
+           lab = TRUE,
+           lab_size = 2,
+           title = "Pearson correlations\nOnly significant (alpha < .05) correlations shown",
+           hc.order = TRUE,
+           outline.col = "white",
+           p.mat = p.mat,
+           sig.level = 0.05,
+           insig = "blank") + 
+  scale_fill_gradient2(low = "#542788", high = "#b35806", mid = "#f7f7f7", 
                       midpoint = 0, limit = c(-1, 1), space = "Lab", 
-                      name="Pearson\nCorrelation")
+                      name = "Correlation\nstrength")
 
 ```
 
-For the last plot with cricle sizes symbolizing correlation size, a smaller number of correlations would be better. However, since people are not good at estimating areas anyways, there is no real value in doing this. I might add the concrete values of the correlation though as an annotation (but only if there are fewer variables! add "lab = TRUE" as an argument to  ggcorrplot).
+I am not sure about displaying the actual correlation strength, I might take that out.
 
-Idea: give the columns in the dataframe a meaningful order: IVs, mediators, outcomes, moderators, but also valence
 
-with cor function and own data 
+Trying a network-like display:
 
 ```{r}
 
-#install.packages("qgraph")
-library(qgraph)
-Graph_pcor <- qgraph(cormat, graph = "pcor", layout = "spring", minimum = "sig", sampleSize = 99, posCol = c("#ef8a62", "darkolivegreen"), negCol = c("#67a9cf", "darkorange"), edge.labels = TRUE)
+ gqgraph <- qgraph(cormat, 
+        graph = "pcor", 
+        layout = "circle", 
+        minimum = "sig", 
+        sampleSize = 99, 
+        theme = "colorblind",
+        edge.labels = TRUE)
 
-Graph_pcor <- qgraph(cormat, graph = "pcor", layout = "circle", minimum = "sig", sampleSize = 99, posCol = c("#ef8a62", "darkolivegreen"), negCol = c("#67a9cf", "darkorange"), edge.labels = TRUE)
+#If I want to have this printable in black and white, I can make the negative lines dashed
+
+makeBW(gqgraph, plot = TRUE)
 
 ```
 
-Awesome! palette = "colorblind" can be used when group = blabla argument is used. I can use that argument to highlight IV, DV, mediator, moderator
+Plus: 
+Really easy way to see in one glance those correlations that stick out. However, I first did this with my real data and there were much fewer significant correlations. The plot was much more accessible when only half as many lines were displayed. 
 
-Furthermore, using dashed lines for negative correlations would be more printer-friendly
+Problems: 
+Displayed numbers are sometimes behind labels and not legible (but I can just omit them but then you wouldn't know anymore what direction color signifies)
+Variable names get shortened and I don't recognize them myself, having to guess what's what
+It's hard to recognize if the lines connect variables that are next to each other versus separated by one other variable 
+
