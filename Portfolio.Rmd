@@ -33,6 +33,8 @@ cormat <- round(cor(data), 2)
 
 melted_cormat <- melt(cormat)
 
+#Jim: Really cool use of the melt() function. I had no idea it existed. Really helpful to see it be used! 
+
 ggplot(data = melted_cormat, aes(Var2, Var1, fill = value))+
   geom_tile(color = "white") +
   scale_fill_gradient2(low = "#b35806", high = "#542788", mid = "#f7f7f7", 
@@ -45,6 +47,7 @@ ggplot(data = melted_cormat, aes(Var2, Var1, fill = value))+
        y = "",
        title = "Pearson correlations")
 
+#Jim: Wow this plot is so cool! I have the hardest time figuring out how to use geom_tile, so I'm glad I have yours to view as a reference! I think the color is used extremely well. Maybe a caption explaining the coorelations could be helpful. 
 ```
 
 This is OK, I don't like that it displays irrelevant and redundant information. It shows all correlations, including those that are insignificant, and the full table, i.e. upper and lower triangle. 
@@ -71,6 +74,7 @@ ggcorrplot(cormat, method = "square",
                       midpoint = 0, limit = c(-1, 1), space = "Lab", 
                       name = "Correlation\nstrength")
 
+#Jim: Whoa this is really cool. I wonder if shifting the x-axis to 90 degrees would be helpful? Just a suggestion. I love the use of the text on each value. I'm confused how you were able to do that though because I don't see geom_text. Very excited to listen to you explain this one in class! 
 ```
 
 I am not sure about displaying the actual correlation strength, I might take that out.
@@ -92,6 +96,7 @@ Trying a network-like display:
 
 makeBW(gqgraph, plot = TRUE)
 
+#Jim: This is awesome. Again, I don't think I understand the data well enough to know what is being displayed, but the opportunity for me to view these different types of plots is so helpful. I wonder if it would be helpful to nudge the most bottom value in the plot to make it more readable. 
 ```
 
 Plus: 
@@ -102,3 +107,6 @@ Displayed numbers are sometimes behind labels and not legible (but I can just om
 Variable names get shortened and I don't recognize them myself, having to guess what's what
 It's hard to recognize if the lines connect variables that are next to each other versus separated by one other variable 
 
+
+Jim Feedback: 
+Hi Sophie! I think you've done such a nice job with your project, and I'm really looking forward to learning more about it during your presentation. My biggest take away from reviewing your code is the opportunity to view so many different packages. Like half the libraries you loaded weren't installed on my Rstudio, so for me, reviewing your project was such an eye-opening experience to seeing what all can be done out there. Great work!
