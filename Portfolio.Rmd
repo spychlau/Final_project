@@ -102,3 +102,28 @@ Displayed numbers are sometimes behind labels and not legible (but I can just om
 Variable names get shortened and I don't recognize them myself, having to guess what's what
 It's hard to recognize if the lines connect variables that are next to each other versus separated by one other variable 
 
+
+Mike's comments:
+Sophie, thanks for sharing your final project draft with me.  I enjoyed reviewing your script and draft visualizations and am looking forward to your final presentation next week.  Following are some comments (organized by letter in the assignment instruction on the course website):
+
+Strengths (a):
+1.  Its exciting to see data from an actual student project visualized.  My project used data publicly available on the internet, which has utility, but I think its much more interesting to view visualizations tied to data that has personal meaning to you.
+2.  I like that you are thinking outside the box in terms of visualizating the same old correlation matrices we see in our top journals, and your three visualizations give three exciting opportunities to do just that.  Assuming your project is intended for an academic audience, it would be exciting for them to latch onto one or more of these.  Each of these seems to hold good potential for use at a conference or even article submission.  Additionally, your three chosen visualizations are very good options for the data you are representing.
+3.  I appreciate the comments you leave throughout the RMD file, both within the chunks of code and between them.  This is especially helpful for an outside reader like me to use in following your train of thought and decision process as you have iterated onto the three different visualizations.
+  
+
+Learning from script (b):
+1.  I appreciate how you have divided your script up into meaningful chunks.  Each chunk serves a specific purpose, from package loadings to separate chunks for each visualization.  This presents a clean and orderly flow that makes your script very easy to follow.
+2.  I also like the clean way you manage your script through indentations and lowercase type.  These stylistic choices also help an external reviewer in working through your script choices.
+3.  Finally, I enjoyed the novelty of the network display of correlations.  This is unlike anything I have encountered before in this context, and I will definitely dig deeper into the qgraph package from your code for future use in my own projects.
+
+
+Suggestions (c):
+I know these are working drafts, so these suggestions are probably nothing you haven't already considered.
+1.  Variables.  I wonder how you could more explicitly explain what the variables are for the uninformed reader.  Are there natural groupings?  Could you highlight the DV?  Could a final draft streamline these a little and only include or highlight those that are most salient, maybe with gghighlight?
+2.  Colors.  The network diagram uses red and blue, which intuitively to me communicate good/bad.  Is this the intended message of the negative values?  If not, perhaps a different color scheme would help redirect my natural interpretations.
+3.  Labels.  Also of benefit to the uninformed reader could be the use of titles, subtitles, or captions to explain and direct my attention further.
+
+Great work, and good luck on your final project!
+
+Mike
