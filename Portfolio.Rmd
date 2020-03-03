@@ -5,6 +5,29 @@ editor_options:
   chunk_output_type: console
 ---
 
+Stephanie Gluck Peer Review 
+
+Area of Strength:
+
+1) Innovative ways to visualize correlation data both the tile plot and the network diagram.
+
+2) I liked that one can visually get a broad sense of the correlations amonst all the variables by looking at the visualiation as a whole (visual 1 and visual 2). 
+
+3) I liked that the thickness of lines across variables in the network diagram showed the strength of the correlation which made it easy as reader to get a general sense of the data. Also that the distinciton between dashed and solid lines to distinguish between negative and postive correlationw would lend itself well even in a black and white situation (non colored print)
+
+What I learned from reviewing Sophie's project: 
+
+It had not occured to me that one could use geom_tile and network diagram to plot correlation values which I find quite innovative and I can see that if the plot were interactive (e.g., if you hover over each tile and the correlation value is displayed) it would be extremely useful and informative on a website format (html). I think this can be done using the plotly package we discussed in class! 
+
+Area of Improvement: 
+
+1) I think the first plot using geom_tile would be visually compelling if it is able to be prsented in color. If this was printed in a publicaiton in black and white, then it would be more beneficial to have the correlation values on them (such as visual 2). However I can see Sophie's point that having too many small grids with small numbers could be challending to intrepret as well. As mentioned above, perhaps looking into ways to make the tile plot interactive for html format could help with interpretation of the visualiztion/data.
+
+2) As Sophie had mentioned, omitting non significant values could be helpful for the tile plots. Perhaps providing additional more detailed visualization to accompany the main grid could get around some of the busy feel of the tile plot. There could be follow up plots that has more selective correlations for specific variables of interest. 
+
+3) For the network diagram, I wonder if there is ways to play with the settings to make the circles larger or the text slightly smaller to accomodate a loger stream. If you had subscales within a scale that you are visualizing, perhaps you can color the cirlces of subscales from the same measure in the same color to "group" your measures. 
+
+
 What this is about:
 I want to plot correlations between variables that were captured in a survey I did in December. I am interested in better ways to communicate correlations than the usual correlation tables I see in our journals.
 
@@ -52,7 +75,6 @@ This is OK, I don't like that it displays irrelevant and redundant information. 
 Using ggcorrplot package 
 
 ```{r}
-
 
 cormat_pearson <- rcorr(as.matrix(data), type = "pearson")
 p.mat <- cormat_pearson$P
